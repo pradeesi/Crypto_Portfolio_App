@@ -3,3 +3,4 @@
 *.pem.key
 *.pyc
 .vscode
+.idea
