@@ -1,0 +1,14 @@
+<!-- app/templates/home/index.html -->
+
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<div>
+    <img src="{{ url_for('static', filename='images/backgroud.jpg') }}" style="position: absolute; left: 0px; top: 0px; z-index: -1; height: 100%; width: 100%;">
+    <div class="intro-header">
+        </br>
+        </br>
+        <h1 class="display-4 text-center ">Cryptocurrency Epicentre</h1>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,573 @@
+<!-- app/templates/portfolio/portfolio_item_live_price.html -->
+
+{% extends "base.html" %}
+{% block title %}Portfolio Items{% endblock %}
+{% block body %}
+
+
+<div class="container-fluid">
+
+		<div class="row justify-content-md-center">
+
+				<div class="col-lg-8 col-sm-12 m-2">
+
+					<!-- Toolbar -->
+					<div class="row">
+						<div class="col-lg-12 col-sm-12 ">
+							<span class="d-block p-1 rounded-top border  border-dark cst_form_heading">
+								<div class="clearfix">
+									<span class="align-middle text-warning">
+                                        <i class="fas fa-chart-pie fa-lg"></i>
+									</span>
+
+									<span class="align-middle">
+										&nbsp;Portfolio Dashboard
+									</span>
+
+
+                                    <div class="btn-group float-right" role="group">
+                                        <a href="{{ url_for('portfolio.list_portfolio_items') }}" class="btn btn-success btn-sm" role="button"><i class="fas fa-times"></i></a>
+					  				</div>
+
+								</div>
+							</span>
+						</div>
+					</div>
+
+
+					<!-- Full Width Row 1 for Dashboard -->
+					<div class="row">
+						<div class="col-lg-12 col-sm-12">
+							<span class="d-block p-0 border border-top-0 border-dark cst_form_content ">
+
+								<div class="row">
+									<!-- Column for Chart 1 -->
+									<div class="col-lg-6 col-sm-6 ">
+										<span class="d-block p-0  border-dark cst_form_content ">
+										<canvas id="investment"></canvas>
+										</span>
+									</div>
+
+									 <!-- Column for Chart 2 -->
+									<div class="col-lg-6 col-sm-6">
+										<span class="d-block p-0  cst_form_content ">
+										<canvas id="coin_asset_value"></canvas>
+										</span>
+									</div>
+								</div>
+
+							</span>
+						</div>
+					</div>
+
+					<!-- Full Width Row 2 for Dashboard -->
+					<div class="row">
+						<div class="col-lg-12 col-sm-12">
+							<span class="d-block p-0 border border-top-0 border-dark cst_form_content ">
+
+								<div class="row">
+									<!-- Column for Chart 1 -->
+									<div class="col-lg-6 col-sm-6 ">
+										<span class="d-block p-0  cst_form_content ">
+										<canvas id="coin_total"></canvas>
+										</span>
+									</div>
+
+									 <!-- Column for Chart 2 -->
+									<div class="col-lg-6 col-sm-6 ">
+										<span class="d-block p-0 border  cst_form_content ">
+										<canvas id="current_price"></canvas>
+										</span>
+									</div>
+								</div>
+
+							</span>
+						</div>
+					</div>
+
+					<!-- Full Width Row for Table Heading  -->
+					<div class="row mt-2">
+						<div class="col-lg-12 col-sm-12">
+							<span class="d-block text-center p-0 border border-bottom-0 rounded-top border-dark cst_form_heading ">
+
+								<span class="align-middle" >
+										&nbsp;Current Aggregated Price
+								</span>
+
+							</span>
+						</div>
+					</div>
+
+					<!-- Full Width Row for Table -->
+					<div class="row">
+						<div class="col-lg-12 col-sm-12">
+							<span class="d-block p-0 cst_form_content ">
+
+								<div class="table-responsive">
+									<table class="table table-hover table-sm cst_table-bordered_1 m-0">
+									   <thead>
+										  <tr>
+											  <th>#</th>
+											  <th>Coin</th>
+											  <th>Price (USD)</th>
+											  <th>Last Market</th>
+											  <th>Last Update</th>
+											  <th>Volume 24h</th>
+											  <th>Volume 24h To</th>
+										  </tr>
+									   </thead>
+
+									   <tbody>
+									   		{% for item in current_price_labels %}
+											 <tr id="{{item}}" class="">
+                                                    <td>{{ loop.index }}</td>
+                                                    <td>{{item}}</td>
+                                                    <td><span id="{{item}}_PRICE_Arrow"></span> <span id="{{item}}_PRICE">NA</span></td>
+                                                    <td id="{{item}}_LASTMARKET">NA</td>
+												 	<td id="{{item}}_LASTUPDATE">NA</td>
+                                                    <td id="{{item}}_VOLUME24HOUR">NA</td>
+                                                    <td id="{{item}}_VOLUME24HOURTO">NA</td>
+											 </tr>
+									   		{% endfor %}
+									   </tbody>
+									</table>
+								 </div>
+
+							</span>
+						</div>
+					</div>
+
+				</div>
+		</div>
+
+</div>
+
+
+<script>
+
+
+
+
+
+$(document).ready(function(){
+
+
+// TOTAL COINS
+
+var ctx_coin_total = document.getElementById('coin_total').getContext('2d');
+var chart_coin_total;
+
+function coin_total_draw() {
+    if (chart_coin_total) chart_coin_total.destroy();
+    chart_coin_total = new Chart(ctx_coin_total, {
+        type: 'doughnut',
+        data: {
+            labels: [{% for item in coin_total_labels %}
+                  		"{{item}}",
+              			{% endfor %}],
+            datasets: [{
+                data: [{% for item in coin_total_values %}
+                  		"{{item}}",
+              			{% endfor %}],
+            }]
+        },
+        options: {
+
+ 			title: {
+      			display: true,
+      			text: 'Coin Counts'
+    		},
+
+    		legend: {
+            display: true,
+            position: 'left'
+        	},
+
+        	padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0
+            },
+
+            animation: {
+            	duration: 1500,
+            }
+        },
+    });
+    chartColors("neon",chart_coin_total);
+}
+
+
+
+// CURRENT ASSETS
+
+var assets_ctx = document.getElementById('coin_asset_value').getContext('2d');
+var assets_chart;
+
+
+function asserts_draw() {
+    if (assets_chart) assets_chart.destroy();
+    assets_chart = new Chart(assets_ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [{% for item in coin_total_labels %}
+                  		"{{item}}",
+              			{% endfor %}],
+            datasets: [{
+                data: [{% for item in coin_total_assets_value %}
+                  		"{{item}}",
+              			{% endfor %}],
+            }]
+        },
+        options: {
+
+ 			title: {
+      			display: true,
+      			text: 'Current Asset Value in USD'
+    		},
+
+    		legend: {
+            display: true,
+            position: 'left'
+        	},
+
+        	padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0
+            },
+
+            animation: {
+            	duration: 1500,
+            }
+        },
+    });
+    chartColors("warm", assets_chart);
+}
+
+
+
+// INVESTMENTS
+
+var investment_ctx = document.getElementById('investment').getContext('2d');
+var investment_chart;
+
+
+function investments_draw() {
+    if (investment_chart) investment_chart.destroy();
+    investment_chart = new Chart(investment_ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [{% for item in invested_amount_labels %}
+                  		"{{item}}",
+              			{% endfor %}],
+            datasets: [{
+                data: [{% for item in invested_amount_values %}
+                  		"{{item}}",
+              			{% endfor %}],
+            }]
+        },
+        options: {
+
+ 			title: {
+      			display: true,
+      			text: 'Invested Amount in USD'
+    		},
+
+    		legend: {
+            display: true,
+            position: 'left'
+        	},
+
+        	padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0
+            },
+
+            animation: {
+            	duration: 1500,
+            }
+        },
+    });
+    chartColors("cool", investment_chart);
+}
+
+
+
+// CURRENT PRICE
+
+var current_price_ctx = document.getElementById('current_price').getContext('2d');
+var current_price_chart;
+
+
+function current_price_draw() {
+    if (current_price_chart) current_price_chart.destroy();
+    current_price_chart = new Chart(current_price_ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for item in current_price_labels %}
+                  		"{{item}}",
+              			{% endfor %}],
+            datasets: [{
+                data: [{% for item in current_price_values %}
+                  		"{{item}}",
+              			{% endfor %}],
+            }]
+        },
+        options: {
+
+ 			title: {
+      			display: true,
+      			text: 'Current Price in USD'
+    		},
+
+    		legend: {
+            display: false,
+        	},
+
+        	padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0
+            },
+
+            animation: {
+            	duration: 1500,
+            },
+
+            scales: {
+
+
+
+	        	xAxes: [{
+                	display: true,
+                	gridLines: {
+                    	display: false,
+                    	drawBorder: true
+                		},
+            	}],
+
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero:false
+	                },
+	                gridLines: {
+                    	display: true,
+                    	drawBorder: true
+                		},
+	            }]
+	        }
+        },
+    });
+    chartColors("neon", current_price_chart);
+}
+
+
+
+
+function chartColors(palette, chart_name) {
+
+    /*Gradients
+      The keys are percentage and the values are the color in a rgba format.
+      You can have as many "color stops" (%) as you like.
+      0% and 100% is not optional.*/
+    var gradient;
+    switch (palette) {
+        case 'cool':
+            gradient = {
+                0: [255, 255, 255, 1],
+                20: [220, 237, 200, 1],
+                45: [66, 179, 213, 1],
+                65: [26, 39, 62, 1],
+                100: [0, 0, 0, 1]
+            };
+            break;
+        case 'warm':
+            gradient = {
+                0: [255, 255, 255, 1],
+                20: [254, 235, 101, 1],
+                45: [228, 82, 27, 1],
+                65: [77, 52, 47, 1],
+                100: [0, 0, 0, 1]
+            };
+            break;
+        case 'neon':
+            gradient = {
+                0: [255, 255, 255, 1],
+                20: [255, 236, 179, 1],
+                45: [232, 82, 133, 1],
+                65: [106, 27, 154, 1],
+                100: [0, 0, 0, 1]
+            };
+            break;
+    }
+
+    //Get a sorted array of the gradient keys
+    var gradientKeys = Object.keys(gradient);
+    gradientKeys.sort(function(a, b) {
+        return +a - +b;
+    });
+
+    //Find datasets and length
+    var chartType = chart_name.config.type;
+    switch (chartType) {
+        case "pie":
+        case "doughnut":
+            var datasets = chart_name.config.data.datasets[0];
+            var setsCount = datasets.data.length;
+            break;
+        case "bar":
+        case "line":
+            var datasets = chart_name.config.data.datasets;
+            var setsCount = datasets.length;
+            break;
+    }
+
+    //Calculate colors
+    var chartColors = [];
+    for (i = 0; i < setsCount; i++) {
+        var gradientIndex = (i + 1) * (100 / (setsCount + 1)); //Find where to get a color from the gradient
+        for (j = 0; j < gradientKeys.length; j++) {
+            var gradientKey = gradientKeys[j];
+            if (gradientIndex === +gradientKey) { //Exact match with a gradient key - just get that color
+                chartColors[i] = 'rgba(' + gradient[gradientKey].toString() + ')';
+                break;
+            } else if (gradientIndex < +gradientKey) { //It's somewhere between this gradient key and the previous
+                var prevKey = gradientKeys[j - 1];
+                var gradientPartIndex = (gradientIndex - prevKey) / (gradientKey - prevKey); //Calculate where
+                var color = [];
+                for (k = 0; k < 4; k++) { //Loop through Red, Green, Blue and Alpha and calculate the correct color and opacity
+                    color[k] = gradient[prevKey][k] - ((gradient[prevKey][k] - gradient[gradientKey][k]) * gradientPartIndex);
+                    if (k < 3) color[k] = Math.round(color[k]);
+                }
+                chartColors[i] = 'rgba(' + color.toString() + ')';
+                break;
+            }
+        }
+    }
+
+    //Copy colors to the chart
+    for (i = 0; i < setsCount; i++) {
+        switch (chartType) {
+            case "pie":
+            case "doughnut":
+                if (!datasets.backgroundColor) datasets.backgroundColor = [];
+                datasets.backgroundColor[i] = chartColors[i];
+                if (!datasets.borderColor) datasets.borderColor = [];
+                datasets.borderColor[i] = "rgba(255,255,255,1)";
+                break;
+            case "bar":
+                datasets[i].backgroundColor = chartColors[i];
+                datasets[i].borderColor = "rgba(255,255,255,0)";
+                break;
+            case "line":
+                datasets[i].borderColor = chartColors[i];
+                datasets[i].backgroundColor = "rgba(255,255,255,0)";
+                break;
+        }
+    }
+
+    //Update the chart to show the new colors
+    chart_name.update();
+}
+
+
+asserts_draw();
+coin_total_draw();
+investments_draw();
+current_price_draw();
+
+
+
+// CRYPTO COMPARE WEBSOCKETS
+
+		 var currentPrice = {};
+         var socket = io.connect('https://streamer.cryptocompare.com/');
+         //Format: {SubscriptionId}~{ExchangeName}~{FromSymbol}~{ToSymbol}
+         //Use SubscriptionId 0 for TRADE, 2 for CURRENT and 5 for CURRENTAGG
+         //For aggregate quote updates use CCCAGG as market
+
+         var subscription = [{% for item in current_price_labels %}
+                  		'5~CCCAGG~{{item}}~USD',
+              			{% endfor %}];
+         //var subscription = ['5~CCCAGG~BTC~USD'];
+         socket.emit('SubAdd', { subs: subscription });
+
+
+         socket.on("m", function(message) {
+            var messageType = message.substring(0, message.indexOf("~"));
+            var res = {};
+            if (messageType == CCC.STATIC.TYPE.CURRENTAGG) {
+               res = CCC.CURRENT.unpack(message);
+               //dataUnpack(res);
+
+               var coin_symbol = res['FROMSYMBOL'];
+
+               for (var key in res) {
+
+                	if (key == 'PRICE') {
+            			document.getElementById(coin_symbol + "_" + key).innerHTML = (res[key]).toFixed(4)
+            		}
+
+					else if (key == 'FLAGS') {
+						if (res[key] == 1) {
+							document.getElementById(coin_symbol).className = "table-success"
+							document.getElementById(coin_symbol + "_PRICE").className = "text-success"
+							document.getElementById(coin_symbol + "_PRICE_Arrow").innerHTML = "<i class='fa fa-arrow-up'></i>"
+							document.getElementById(coin_symbol + "_PRICE_Arrow").className = "text-success"
+							}
+						else if (res[key] == 2) {
+							document.getElementById(coin_symbol).className = "table-danger"
+							document.getElementById(coin_symbol + "_PRICE").className = "text-danger"
+							document.getElementById(coin_symbol + "_PRICE_Arrow").innerHTML = "<i class='fa fa-arrow-down'></i>"
+							document.getElementById(coin_symbol + "_PRICE_Arrow").className = "text-danger"
+
+							}
+						}
+            	    else if (key == 'LASTMARKET') {
+            			document.getElementById(coin_symbol + "_" + key).innerHTML =res[key];
+            			}
+
+            		else if (key == 'LASTUPDATE') {
+            			document.getElementById(coin_symbol + "_" + key).innerHTML =timeConverter(res[key]);
+            			}
+
+            		else if (['VOLUME24HOUR','VOLUME24HOURTO'].indexOf(key) > -1){
+            			document.getElementById(coin_symbol + "_" + key).innerHTML =(res[key]).toFixed(2);
+            			}
+
+            	}
+
+            }
+         });
+
+
+
+function timeConverter(UNIX_timestamp){
+  var a = new Date(UNIX_timestamp * 1000);
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var year = a.getFullYear();
+  var month = months[a.getMonth()];
+  var date = a.getDate();
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var sec = a.getSeconds();
+  var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+  return time;
+}
+
+
+
+});
+
+
+</script>
+
+
+
+{% endblock %}

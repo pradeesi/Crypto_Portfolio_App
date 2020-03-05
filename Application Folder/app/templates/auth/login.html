@@ -1,0 +1,68 @@
+<!-- app/templates/auth/login.html -->
+
+{% import "bootstrap/utils.html" as utils %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block body %}
+
+
+{% macro render_field(field) %}
+  <label class="control-label col-form-label form-control-sm" style="padding-left: 0px;> {{ field.label }} </label>
+  <dd>{{ field(**kwargs)|safe }}
+  {% if field.errors %}
+    {% for error in field.errors %}
+      	<div class="form-control-sm" style="color: red; padding-left: 0px; padding-bottom: 0px;">{{ error }}</div>
+    {% endfor %}
+  {% endif %}
+  </dd>
+{% endmacro %}
+
+
+
+<div class="container-fluid">
+
+  <br/>
+   {{ utils.flashed_messages() }}
+  <br/>
+
+  	<div class="center col-lg-4 col-sm-10">
+
+
+		<div class="card border-success  mb-3" >
+
+			<div class="card-header" style="padding-left: 0px; padding-bottom: 5px; padding-top: 5px;">
+				<div class="form-control-sm text-success"  style="padding-bottom: 0px; padding-top: 0px;">
+						User Login
+				</div>
+			</div>
+
+			<div class="card-body" style="padding-bottom: 0px; padding-top: 5px;">
+
+				<form action="" method="POST" role="form" class="form">
+
+		    		{{ form.hidden_tag() }} {{ wtf.form_errors(form, hiddens="only") }} 
+
+		    		{{ render_field(form.email,class="form-control form-control-sm",placeholder="Enter Email",required="required",type="email") }}
+
+
+		    		{{ render_field(form.password,class="form-control form-control-sm",placeholder="Enter Password",required="required",type="password") }}
+
+			</div>
+			
+			<hr class = "border-success" style="margin-top: 8px; margin-bottom: 0px; padding-bottom: 0px; padding-top: 0px;">
+			<div class="card-header button_align_right" >
+					<div class="btn-group" role="group" aria-label="group">
+
+						{{ form.submit(class="btn btn-success btn-sm") }}
+
+			    		<a href="{{ url_for('auth.register') }}" class="btn btn-outline-primary btn-sm" role="button">Register</a>
+
+		    		</div>
+				</form>
+			</div>
+
+  		</div>
+	</div>
+</div>
+{% endblock %}

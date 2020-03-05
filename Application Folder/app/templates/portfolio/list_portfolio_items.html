@@ -1,0 +1,130 @@
+<!-- app/templates/portfolio/list_portfolio_items.html -->
+
+{% extends "base.html" %}
+{% block title %}Portfolio Items{% endblock %}
+{% block body %}
+
+<div class="container-fluid">
+	<div class="row justify-content-md-center" >
+		<div class="col-lg-8 col-sm-12 mt-2">
+
+			{% if (folio_items is defined and folio_items|length > 0) %}
+
+				{% for message in get_flashed_messages() %}
+					<div class="alert alert-success alert-dismissible fade show" role="alert">
+						  {{ message }}
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						  </button>
+					</div>
+				{% endfor %}
+
+				<!-- Toolbar -->
+				<div class="row">
+					<div class="col-lg-12 col-sm-12 ">
+						<span class="d-block p-1 rounded-top border border-bottom-0 border-dark cst_form_heading">
+							<div class="clearfix">
+								<span class="align-middle">
+									<img  src="{{ url_for('static', filename='icons/money.png') }}" alt="Coin" height="30" width="30" class="float-left">
+								</span>
+								<span class="align-middle">
+										&nbsp;Portfolio Summary
+								</span>
+
+								<div class="btn-group float-right p-0" role="group">
+									<a href="{{ url_for('portfolio.add_portfolio_item') }}" class="btn btn-success btn-sm float-right" role="button"><i class="fa fa-plus"></i> Add</a>
+								</div>
+
+								<div class="btn-group float-right mr-2" role="group">
+									<a href="{{ url_for('portfolio.portfolio_dashbaord') }}" class="btn btn-outline-warning btn-sm float-right" role="button"><i class="fa fa-chart-pie fa-lg"></i> Dashboard</a>
+								</div>
+
+							</div>
+						</span>
+					</div>
+				</div>
+
+				<!-- Contents -->
+				<div class="row">
+					<div class="col-lg-12 col-sm-12">
+						<span class="d-block cst_form_content">
+
+							<div class="table-responsive">
+								<table class="table table-hover table-sm cst_table-bordered_1 m-0">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Coin</th>
+											<th>Quantity</th>
+											<th>PP</th>
+											<th>CP</th>
+											<th>CAV</th>
+											<th>P/L</th>
+											<th>Change %</th>
+											<th align="center" style="text-align: center;">More</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										{% for folio_item in folio_items %}
+											<tr class="table-{{ folio_item.css_class }}">
+
+												<td>{{ loop.index }}</td>
+
+												<td> <img src="{{ url_for('static', filename='icons') }}/{{ folio_item.symbol }}.png" alt="" width="20" height="20"/> &nbsp; {{ folio_item.name }} ({{ folio_item.symbol }})</td>
+
+												<td>{{ folio_item.quantity }}</td>
+
+												<td>{{ folio_item.purchase_price }}</td>
+
+												<td id = 'btc' class="font-weight-bold text-{{ folio_item.css_class }}">{{ folio_item.current_price }}</td>
+
+												<td>{{ folio_item.current_asset_value }}</td>
+
+												{% if folio_item.css_class == 'success' %}
+													 <td class="text-{{ folio_item.css_class }}"><i class="fa fa-arrow-up"></i> {{ folio_item.profit_loss_amt }}</td>
+												{% else %}
+													 <td class="text-{{ folio_item.css_class }}"><i class="fa fa-arrow-down"></i> {{ folio_item.profit_loss_amt }}</td>
+												{% endif %}
+
+												{% if folio_item.css_class == 'success' %}
+													<td class="text-{{ folio_item.css_class }}"><i class="fa fa-arrow-up"></i> {{ folio_item.change_percentage }}</td>
+												{% else %}
+													<td class="text-{{ folio_item.css_class }}"><i class="fa fa-arrow-down"></i> {{ folio_item.change_percentage }}</td>
+												{% endif %}
+
+												<td align="center">
+													<a class="form-control-sm text-primary" role="button" href="{{ url_for('portfolio.portfolio_item_details', id=folio_item.item_id) }}"><i class="fa fa-external-link-alt"></i></a>
+												</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</span>
+					</div>
+				</div>
+
+
+			{% else %}
+
+				<div class="d-flex p-2 flex-column justify-content-center align-items-center">
+					<br>
+					<h2 class="text align-self-center p-2">You haven't added any portfolio items yet.</h1>
+					<div class="col-lg-8 col-sm-10">
+						<hr style="border-width: 2px;">
+					</div>
+					<a href="{{ url_for('portfolio.add_portfolio_item') }}" class="btn btn-success btn-sm" role="button">
+						<i class="fa fa-plus"></i> Add New
+					</a>
+				</div>
+
+			{% endif %}
+
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}

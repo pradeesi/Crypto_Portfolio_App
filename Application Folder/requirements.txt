@@ -1,0 +1,8 @@
+flask-sqlalchemy
+mysql-python
+mysql-connector-python
+flask-login
+flask-migrate
+flask_wtf
+flask-bootstrap
+apscheduler

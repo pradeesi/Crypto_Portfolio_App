@@ -1,0 +1,123 @@
+==> Pouring mariadb-10.2.12.el_capitan.bottle.tar.gz
+==> /usr/local/Cellar/mariadb/10.2.12/bin/mysql_install_db --verbose --user=pradeesi --basedir=/usr/local/Cellar/mariadb/10.2.12 --datadir=/usr/local/var/m
+==> Caveats
+A "/etc/my.cnf" from another install may interfere with a Homebrew-built
+server starting up correctly.
+
+MySQL is configured to only allow connections from localhost by default
+
+To connect:
+    mysql -uroot
+
+To have launchd start mariadb now and restart at login:
+  brew services start mariadb
+Or, if you don't want/need a background service you can just run:
+  mysql.server start
+==> Summary
+🍺  /usr/local/Cellar/mariadb/10.2.12: 640 files, 168.7MB
+
+===============================
+
+
+users:
+	root / inNovat1ve
+	app_admin / inNovat1ve
+
+Database:
+	crypto_db
+
+
+===============================
+
+export PATH=${PATH}:/usr/local/mysql/bin
+
+mysql -u root -p
+
+use crypto_db;
+
+show tables;
+
+
+SELECT column_name from information_schema.columns where table_schema = "crypto_db" and table_name = "portfolio"; 
+
+SELECT column_name from information_schema.columns where table_schema = "coin_master" and table_name = "portfolio"; 
+
+
+===============================
+
+
+DROP DATABASE crypto_db;
+
+
+show databases;
+
+
+CREATE DATABASE crypto_db;
+
+GRANT ALL PRIVILEGES ON crypto_db . * TO 'app_admin'@'localhost';
+
+
+
+===============================
+
+cd Pradeep/Software\ Projects/Crypto\ App/Application\ Folder/
+
+
+export PATH=${PATH}:/usr/local/mysql/bin
+
+mysql -u root -p
+
+DROP DATABASE crypto_db;
+
+CREATE DATABASE crypto_db;
+
+CREATE USER 'app_admin'@'localhost' IDENTIFIED BY 'app_admin';
+
+SET PASSWORD FOR 'app_admin'@'localhost' = PASSWORD('inNovat1ve');
+
+GRANT ALL PRIVILEGES ON crypto_db . * TO 'app_admin'@'localhost';
+
+
+Note: Delete the "Migrations" Folder from Application Folder (If exists)
+
+export FLASK_APP=run.py
+
+flask db init
+
+flask db migrate
+
+flask db upgrade
+
+===============================
+
+
+CREATE USER 'root'@'127.0.0.1' IDENTIFIED BY 'root';
+
+
+
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('inNovat1ve');
+
+SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('inNovat1ve');
+
+SET PASSWORD FOR 'root' = PASSWORD('inNovat1ve');
+
+
+
+
+CREATE USER 'app_admin'@'localhost' IDENTIFIED BY 'app_admin';
+
+CREATE USER 'app_admin'@'127.0.0.1' IDENTIFIED BY 'app_admin';
+
+CREATE USER 'app_admin' IDENTIFIED BY 'app_admin';
+
+SET PASSWORD FOR 'app_admin'@'localhost' = PASSWORD('inNovat1ve');
+
+SET PASSWORD FOR 'app_admin'@'127.0.0.1' = PASSWORD('inNovat1ve');
+
+SET PASSWORD FOR 'app_admin' = PASSWORD('inNovat1ve');
+
+
+CREATE DATABASE crypto_db;
+
+GRANT ALL PRIVILEGES ON crypto_db . * TO 'app_admin'@'localhost';
+

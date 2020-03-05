@@ -1,0 +1,185 @@
+<!-- app/templates/portfolio/portfolio_item_charts.html -->
+
+{% extends "base.html" %}
+{% block title %}Portfolio Items{% endblock %}
+{% block body %}
+
+
+<div class="container-fluid">
+
+	{% if (folio_item is defined and folio_item|length > 0) %}
+
+
+		<div class="row justify-content-md-center">
+
+				<div class="col-lg-8 col-sm-12 m-2">
+
+					<!-- Toolbar -->
+					<div class="row">
+						<div class="col-lg-12 col-sm-12 ">
+							<span class="d-block p-1 rounded-top border border-dark bg-light">
+								<div class="clearfix">
+									<span class="align-middle">
+										<img src="{{ url_for('static', filename='icons') }}/{{ folio_item.symbol }}.png" alt=""  width="30" height="30"/>
+									</span>
+
+									<span class="align-middle">
+										&nbsp;{{ folio_item.name }} ({{ folio_item.symbol }})
+									</span>
+
+									<div class="btn-group float-right" role="group">
+
+										<a href="{{ url_for('portfolio.portfolio_item_details', id=folio_item.item_id) }}" class="btn btn-outline-secondary btn-sm" role="button"><i class="fa fa-arrow-left"></i></a>
+
+										<a href="{{ url_for('portfolio.list_portfolio_items') }}" class="btn btn-outline-secondary btn-sm" role="button"><i class="fas fa-times"></i></a>
+
+					  				</div>
+
+									<div class="btn-group float-right mr-3" role="group">
+										<a href="{{ url_for('portfolio.portfolio_item_charts', id=folio_item.item_id, duration='1D') }}" class="btn btn-{{ 'success' if chart_duration == '1D' else 'outline-success' }} btn-sm" role="button">1D</a>
+										<a href="{{ url_for('portfolio.portfolio_item_charts', id=folio_item.item_id, duration='7D') }}" class="btn btn-{{ 'success' if chart_duration == '7D' else 'outline-success' }} btn-sm" role="button">7D</a>
+										<a href="{{ url_for('portfolio.portfolio_item_charts', id=folio_item.item_id, duration='1M') }}" class="btn btn-{{ 'success' if chart_duration == '1M' else 'outline-success' }} btn-sm" role="button">1M</a>
+										<a href="{{ url_for('portfolio.portfolio_item_charts', id=folio_item.item_id, duration='6M') }}" class="btn btn-{{ 'success' if chart_duration == '6M' else 'outline-success' }} btn-sm" role="button">6M</a>
+										<a href="{{ url_for('portfolio.portfolio_item_charts', id=folio_item.item_id, duration='1Y') }}" class="btn btn-{{ 'success' if chart_duration == '1Y' else 'outline-success' }} btn-sm" role="button">1Y</a>
+										<a href="{{ url_for('portfolio.portfolio_item_charts', id=folio_item.item_id, duration='ATD') }}" class="btn btn-{{ 'success' if chart_duration == 'ATD' else 'outline-success' }} btn-sm" role="button">ATD</a>
+									</div>
+
+
+								</div>
+							</span>
+						</div>
+					</div>
+
+
+					<!-- Full Width Row for Charts -->
+					<div class="row">
+						<div class="col-lg-12 col-sm-12">
+							<span class="d-block p-0 border border-top-0 border-dark ">
+                                <!-- Column for Chart 1 -->
+                                <div class="col-lg-12 col-sm-12 ">
+                                    <canvas id="myChart"></canvas>
+                                </div>
+							</span>
+						</div>
+					</div>
+
+				</div>
+		</div>
+
+	{% else %}
+
+		<div class="d-flex p-2 flex-column justify-content-center align-items-center">
+			<br>
+			<h2 class="text align-self-center p-2">Portfolio Item Details Not Found.</h1>
+			<div class="col-lg-8 col-sm-10">
+				<hr style="border-width: 2px;">
+			</div>
+			<a href="{{ url_for('portfolio.add_portfolio_item') }}" class="btn btn-success btn-sm" role="button">
+				<i class="fa fa-plus"></i> Add New
+			</a>
+		</div>
+
+	{% endif %}
+
+</div>
+
+
+
+
+
+
+<script>
+
+
+
+
+
+$(document).ready(function(){
+
+	var ctx = document.getElementById("myChart");
+	var myChart = new Chart(ctx, {
+	    type: 'line',
+	    data: {
+
+	        labels: [{% for item in chart_data_labels %}
+                  		"{{item}}",
+              		{% endfor %}],
+	        datasets: [{
+	            label: 'Price ',
+	            data: [{% for item in chart_data_values %}
+                  		"{{item}}",
+              			{% endfor %}],
+	            backgroundColor: [
+	                'rgba(54, 162, 235, 0.2)'
+	            ],
+	            borderColor: [
+	                'rgba(54, 162, 235, 1)',
+	            ],
+	            borderWidth: 2,
+	            pointRadius: 0,
+	            pointHoverRadius: 2,
+	            pointHoverBackgroundColor: 'rgba(153, 102, 255, 1)',
+	            pointHoverBorderColor: 'rgba(153, 102, 255, 1)',
+	            fill: false,
+	            spanGaps: true,
+	        }]
+	    },
+	    options: {
+
+ 			title: {
+      			display: true,
+      			text: '{{ chart_heading }}'
+    		},
+
+    		legend: {
+            display: false,
+        	},
+
+        	padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0
+            },
+
+            animation: {
+            	duration: 1500,
+            },
+
+            tooltips: {
+            	enabled: true,
+            	backgroundColor: 'rgba(54, 162, 235, 1)',
+            	titleFontColor: 'rgba(0, 0, 0, 1)',
+            	bodyFontColor: 'rgba(0, 0, 0, 1)'
+            },
+
+	        scales: {
+
+
+
+	        	xAxes: [{
+                	display: true,
+                	gridLines: {
+                    	display: true,
+                		},
+            	}],
+
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero:false
+	                },
+	                gridLines: {
+                    	display: true,
+                		},
+	            }]
+	        }
+	    }
+	});
+
+});
+
+
+</script>
+
+
+{% endblock %}

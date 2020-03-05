@@ -1,0 +1,178 @@
+/* app/static/css/custom_css/custom_style.css */
+
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+
+.center {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+
+.cst_center {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center_100 {
+    margin: auto;
+    width: 100%;
+    padding: 10px;
+}
+
+
+.body_style {
+	/*background-color: #004a7c; */
+}
+
+
+/* navbar customizations */
+
+.cst_navbar {
+	background-color: #004a7c;
+}
+
+.nav-link {
+	color: white;	
+}
+
+a.nav-link:hover {
+	color: #3ADF00;
+}
+
+
+.display-4{
+	color: #81DAF5;	
+}
+
+
+.cst_footer_font {
+	/*font-family: "Times New Roman", Times, serif; */
+	font-size: 12px;
+	font-weight: normal;
+	color: #00aee6;
+}
+
+
+
+
+/* Box customizations  */
+
+/*.border-success{
+	border-color: #004a7c;
+}*/
+
+
+.cst_zero_padding{
+	padding-bottom: 0px; 
+	padding-top: 0px;
+}
+
+
+.button_align_right {
+	text-align: right; 
+	padding-right: 8px;  
+	padding-top: 8px;
+	padding-bottom: 8px; 
+}
+
+.cst_form_content{
+    background-color: white;
+}
+
+
+
+.cst_form_heading {
+
+    background-color: #006699;
+    color: white;
+
+}
+
+
+.cst_form_heading_2 {
+
+    background-color: #006699;
+    color: white;
+
+}
+
+.cst_form_heading a {
+    color: white;
+}
+
+
+
+
+
+/* Custom Bordered Table CSS - 1 */
+/*============================*/
+
+table.cst_table-bordered_1{
+	border: 1px solid black;
+	vertical-align: middle;
+	border-collapse: collapse;
+/*	font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; */
+	font-weight: 600;
+	font-size:13px;
+}
+
+table.cst_table-bordered_1 > thead > tr > th{
+	padding: 4px;
+	vertical-align: middle;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+
+table.cst_table-bordered_1 > tbody > tr > td{
+	padding: 4px;
+	vertical-align: middle;
+    border-bottom: 1px solid black;
+}
+
+table.cst_table-bordered_1 > tbody > tr > td > div.btn-group{
+	float: right;
+}
+
+/*============================*/
+
+
+
+/* Custom Bordered Table CSS - 2 */
+/*============================*/
+
+table.cst_table-bordered_2{
+/*	border:1px solid black; */
+	vertical-align: middle;
+	border-collapse: collapse;
+/*	font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; */
+	font-weight: 600;
+	font-size:13px;
+	margin-bottom: 0px;
+	padding-bottom: 0px; 
+}
+
+table.cst_table-bordered_2 > thead > tr > th{
+	padding: 4px;
+	vertical-align: middle;
+
+}
+
+
+table.cst_table-bordered_2 > tbody > tr > td{
+	padding: 4px;
+	vertical-align: middle;
+
+}
+
+table.cst_table-bordered_2 > tbody > tr > td > div.btn-group{
+	float: right;
+}
+
+/*============================*/
+

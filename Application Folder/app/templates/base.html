@@ -1,0 +1,107 @@
+<!-- app/templates/base.html -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <title>{{ title }} | Coin Manager</title>
+   
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+   <!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font_awesome/css/fontawesome-all.min.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap4/bootstrap.min.css') }}" >
+   
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom_css/custom_style.css') }}">
+
+    <script
+        src="http://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
+
+</head>
+
+
+<body>
+
+    <nav class="navbar navbar-static-top navbar-expand-lg cst_navbar"">
+        <img  src="{{ url_for('static', filename='icons/Bitcoin.ico') }}" alt="Coin" height="25" width="25">
+  
+      <div class="collapse navbar-collapse justify-content-end">
+        {% if current_user.is_authenticated %}
+          <a class="nav-link form-control-sm" style="padding-bottom: 0px; padding-top: 0px;" href="{{ url_for('portfolio.list_portfolio_items') }}">Home</a>
+          <a class="nav-link form-control-sm" style="padding-bottom: 0px; padding-top: 0px;" href="{{ url_for('auth.logout') }}">Logout</a>
+          <a class="nav-link form-control-sm" style="padding-bottom: 0px; padding-top: 0px;" href="#"><i class="fa fa-user"></i>&nbsp;&nbsp;{{ current_user.first_name }} </a>
+        {% else %}
+          <a class="nav-link form-control-sm" style="padding-bottom: 0px; padding-top: 0px;" href="{{ url_for('home.homepage') }}">Home</a>
+          <a class="nav-link form-control-sm" style="padding-bottom: 0px; padding-top: 0px;" href="{{ url_for('auth.register') }}">Register</a>
+          <a class="nav-link form-control-sm" style="padding-bottom: 0px; padding-top: 0px;" href="{{ url_for('auth.login') }}">Login</a>
+        {% endif %}
+      </div>
+
+    </nav>
+
+
+<div class="container-fluid scroll h-100" style="background:  #F0F0F0;">
+
+
+    <div class="wrapper">
+      {% block body %}
+      {% endblock %}
+      <div class="push"></div>
+    </div>
+
+
+</div>
+
+    <nav class="navbar navbar-expand-lg cst_navbar"">
+
+      <a class="navbar-brand cst_zero_padding cst_footer_font" href="#">© 2018 CC EPICENTER ALL RIGHTS RESERVED.</a>
+     
+     <!-- 
+      <div class="collapse navbar-collapse justify-content-end cst_footer_font">
+          <a class="nav-link" style="padding-bottom: 0px; padding-top: 0px;" href="{{ url_for('home.dashboard') }}">Dashboard</a>
+      </div>
+      -->
+
+    </nav>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script 
+        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"
+        crossorigin="anonymous">
+    </script>    
+
+
+    <script 
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" 
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
+        crossorigin="anonymous">
+    </script>
+
+    <script 
+        src="{{ url_for('static', filename='js/bootstrap.min.js') }}">
+    </script>
+
+
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js">
+    </script>
+
+
+    <script
+        src="{{ url_for('static', filename='js/cryptocompare/ccc-streamer-utilities.js') }}">
+    </script>
+
+</body>
+</html>

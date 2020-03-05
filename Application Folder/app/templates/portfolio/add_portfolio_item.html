@@ -1,0 +1,120 @@
+<!-- app/templates/portfolio/add_portfolio_item.html -->
+
+{% import "bootstrap/utils.html" as utils %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}Add Portfolio Item{% endblock %}
+{% block body %}
+
+
+
+{% macro render_field(field) %}
+  <label class="control-label col-form-label form-control-sm" style="padding-left: 0px;> {{ field.label }} </label>
+  <dd>{{ field(**kwargs)|safe }}
+  {% if field.errors %}
+    {% for error in field.errors %}
+      	<div class="form-control-sm" style="color: red;">{{ error }}</div>
+    {% endfor %}
+  {% endif %}
+  </dd>
+{% endmacro %}
+
+
+<div class="container-fluid">
+
+	<div class="row justify-content-md-center" >
+		<div class="col-lg-8 col-sm-12 mt-2">
+
+			{% for message in get_flashed_messages() %}
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				  {{ message }}
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				  </button>
+			</div>
+			{% endfor %}
+
+			<!-- Toolbar -->
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 ">
+					<span class="d-block p-1 rounded-top border border-dark cst_form_heading">
+						<div class="clearfix">
+							<span class="align-middle">
+								&nbsp;	Add Portfolio Item
+							</span>
+							<div class="btn-group float-right mr-2" role="group">
+								<a href="{{ url_for('portfolio.list_portfolio_items') }}"><i class="fas fa-times"></i></a>
+							</div>
+						</div>
+					</span>
+				</div>
+			</div>
+
+
+			<!-- Contents -->
+			<div class="row">
+				<div class="col-lg-12 col-sm-12">
+					<span class="d-block p-2 border border-top-0 border-dark cst_form_content">
+
+						<form action="" method="POST" role="form" class="form">
+
+							{{ form.hidden_tag() }} {{ wtf.form_errors(form, hiddens="only") }}
+
+							<div class="row">
+								<div class="col-lg-6 col-sm-6 ">
+									{{ render_field(form.coin,class="form-control form-control-sm",placeholder="Quantity",required="required",type="string") }}
+								</div>
+
+								<div class="col-lg-6 col-sm-6 ">
+									{{ render_field(form.quantity,class="form-control form-control-sm",placeholder="Quantity",required="required",type="number",step="any",min=0) }}
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-lg-6 col-sm-6 ">
+									{{ render_field(form.purchase_price,class="form-control form-control-sm",placeholder="Purchase Price",required="required",type="number",step="any") }}
+								</div>
+
+								<div class="col-lg-6 col-sm-6 ">
+									{{ render_field(form.purchase_fees,class="form-control form-control-sm",placeholder="Exhange Purchase Fees", type="number",step="any") }}
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-lg-6 col-sm-6 ">
+									{{ render_field(form.purchase_date,class="form-control form-control-sm",placeholder="Purchase Date",required="required",type="date") }}
+								</div>
+
+								<div class="col-lg-6 col-sm-6 ">
+									{{ render_field(form.broker,class="form-control form-control-sm",placeholder="Broker or Exchange Name",maxlength="150", type="text") }}
+								</div>
+							</div>
+
+							{{ render_field(form.remarks,class="form-control form-control-sm",placeholder="Remarks", maxlength="700", type="string") }}
+
+					</span>
+				</div>
+			</div>
+
+			<!-- Bottom Button Bar -->
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 ">
+					<span class="d-block p-2 border rounded-bottom border-top-0 border-dark bg-light">
+						<div class="clearfix">
+							<div class="btn-group float-right" role="group">
+								{{ form.submit(class="btn btn-success btn-sm") }}
+
+								<a href="{{ url_for('portfolio.list_portfolio_items')}}" class="btn btn-outline-primary btn-sm" role="button">Back</a>
+							</div>
+						</div>
+					</span>
+				</div>
+			</div>
+
+			</form>
+
+		</div>
+	</div>
+</div>
+
+{% endblock %}

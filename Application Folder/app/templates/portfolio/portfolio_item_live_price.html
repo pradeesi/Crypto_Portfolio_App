@@ -1,0 +1,399 @@
+<!-- app/templates/portfolio/portfolio_item_live_price.html -->
+
+{% extends "base.html" %}
+{% block title %}Portfolio Items{% endblock %}
+{% block body %}
+
+
+<div class="container-fluid">
+
+		<div class="row justify-content-md-center">
+
+				<div class="col-lg-8 col-sm-12 m-2">
+
+					<!-- Toolbar -->
+					<div class="row">
+						<div class="col-lg-12 col-sm-12 ">
+							<span class="d-block p-1 rounded-top border border-bottom-0 border-dark cst_form_heading">
+								<div class="clearfix">
+									<span class="align-middle">
+                                        <img src="{{ url_for('static', filename='icons') }}/{{ folio_item_symbol }}.png" alt=""  width="30" height="30"/>
+									</span>
+
+									<span class="align-middle">
+										&nbsp;{{ folio_item_name }} ({{ folio_item_symbol }}) Live Data
+									</span>
+
+                                    <div class="btn-group float-right" role="group">
+                                        <a href="{{ url_for('portfolio.portfolio_item_details', id=folio_item_id)}}" class="btn btn-success btn-sm" role="button"><i class="fas fa-arrow-left"></i></a>
+                                        <a href="{{ url_for('portfolio.list_portfolio_items') }}" class="btn btn-outline-success btn-sm" role="button"><i class="fas fa-times"></i></a>
+					  				</div>
+
+								</div>
+							</span>
+						</div>
+					</div>
+
+
+					<!-- Full Width Row for Table -->
+					<div class="row">
+						<div class="col-lg-12 col-sm-12">
+							<span class="d-block cst_form_content ">
+
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-sm cst_table-bordered_1 m-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Exchange</th>
+                                                    <th>Price (USD)</th>
+                                                    <th>Last Update</th>
+                                                    <th>Last Volume</th>
+                                                    <th>Last Volume To</th>
+                                                    <th>Volume 24h</th>
+                                                    <th>Volume 24h To</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                                <tr id="Bitfinex" class="">
+                                                    <td>1</td>
+                                                    <td>Bitfinex</td>
+                                                    <td><span id="Bitfinex_PRICE_Arrow"></span> <span id="Bitfinex_PRICE">NA</span></td>
+                                                    <td id="Bitfinex_LASTUPDATE">NA</td>
+                                                    <td id="Bitfinex_LASTVOLUME">NA</td>
+                                                    <td id="Bitfinex_LASTVOLUMETO">NA</td>
+                                                    <td id="Bitfinex_VOLUME24HOUR">NA</td>
+                                                    <td id="Bitfinex_VOLUME24HOURTO">NA</td>
+                                                </tr>
+
+                                                <tr id="Poloniex" class="">
+                                                    <td>2</td>
+                                                    <td>Poloniex</td>
+                                                    <td><span id="Poloniex_PRICE_Arrow"></span> <span id="Poloniex_PRICE">NA</span></td>
+                                                    <td id="Poloniex_LASTUPDATE">NA</td>
+                                                    <td id="Poloniex_LASTVOLUME">NA</td>
+                                                    <td id="Poloniex_LASTVOLUMETO">NA</td>
+                                                    <td id="Poloniex_VOLUME24HOUR">NA</td>
+                                                    <td id="Poloniex_VOLUME24HOURTO">NA</td>
+                                                </tr>
+
+                                                <tr id="Kraken">
+                                                    <td>3</td>
+                                                    <td>Kraken</td>
+                                                    <td><span id="Kraken_PRICE_Arrow"></span> <span id="Kraken_PRICE">NA</span></td>
+                                                    <td id="Kraken_LASTUPDATE">NA</td>
+                                                    <td id="Kraken_LASTVOLUME">NA</td>
+                                                    <td id="Kraken_LASTVOLUMETO">NA</td>
+                                                    <td id="Kraken_VOLUME24HOUR">NA</td>
+                                                    <td id="Kraken_VOLUME24HOURTO">NA</td>
+                                                </tr>
+
+                                                <tr id="Coinbase">
+                                                    <td>4</td>
+                                                    <td>Coinbase</td>
+                                                    <td><span id="Coinbase_PRICE_Arrow"></span> <span id="Coinbase_PRICE">NA</span></td>
+                                                    <td id="Coinbase_LASTUPDATE">NA</td>
+                                                    <td id="Coinbase_LASTVOLUME">NA</td>
+                                                    <td id="Coinbase_LASTVOLUMETO">NA</td>
+                                                    <td id="Coinbase_VOLUME24HOUR">NA</td>
+                                                    <td id="Coinbase_VOLUME24HOURTO">NA</td>
+                                                </tr>
+
+                                                <tr id="Bitstamp">
+                                                    <td>5</td>
+                                                    <td>Bitstamp</td>
+                                                    <td><span id="Bitstamp_PRICE_Arrow"></span> <span id="Bitstamp_PRICE">NA</span></td>
+                                                    <td id="Bitstamp_LASTUPDATE">NA</td>
+                                                    <td id="Bitstamp_LASTVOLUME">NA</td>
+                                                    <td id="Bitstamp_LASTVOLUMETO">NA</td>
+                                                    <td id="Bitstamp_VOLUME24HOUR">NA</td>
+                                                    <td id="Bitstamp_VOLUME24HOURTO">NA</td>
+                                                </tr>
+
+                                                <tr id="HitBTC">
+                                                    <td>6</td>
+                                                    <td>HitBTC</td>
+                                                    <td><span id="HitBTC_PRICE_Arrow"></span> <span id="HitBTC_PRICE">NA</span></td>
+                                                    <td id="HitBTC_LASTUPDATE">NA</td>
+                                                    <td id="HitBTC_LASTVOLUME">NA</td>
+                                                    <td id="HitBTC_LASTVOLUMETO">NA</td>
+                                                    <td id="HitBTC_VOLUME24HOUR">NA</td>
+                                                    <td id="HitBTC_VOLUME24HOURTO">NA</td>
+                                                </tr>
+
+                                                <tr id="Gemini">
+                                                    <td>7</td>
+                                                    <td>Gemini</td>
+                                                    <td><span id="Gemini_PRICE_Arrow"></span> <span id="Gemini_PRICE">NA</span></td>
+                                                    <td id="Gemini_LASTUPDATE">NA</td>
+                                                    <td id="Gemini_LASTVOLUME">NA</td>
+                                                    <td id="Gemini_LASTVOLUMETO">NA</td>
+                                                    <td id="Gemini_VOLUME24HOUR">NA</td>
+                                                    <td id="Gemini_VOLUME24HOURTO">NA</td>
+                                                </tr>
+
+                                                <tr id="Exmo">
+                                                    <td>8</td>
+                                                    <td>Exmo</td>
+                                                    <td><span id="Exmo_PRICE_Arrow"></span> <span id="Exmo_PRICE">NA</span></td>
+                                                    <td id="Exmo_LASTUPDATE">NA</td>
+                                                    <td id="Exmo_LASTVOLUME">NA</td>
+                                                    <td id="Exmo_LASTVOLUMETO">NA</td>
+                                                    <td id="Exmo_VOLUME24HOUR">NA</td>
+                                                    <td id="Exmo_VOLUME24HOURTO">NA</td>
+                                                </tr>
+
+                                                <tr id="Cexio">
+                                                    <td>9</td>
+                                                    <td>Cexio</td>
+                                                    <td><span id="Cexio_PRICE_Arrow"></span> <span id="Cexio_PRICE">NA</span></td>
+                                                    <td id="Cexio_LASTUPDATE">NA</td>
+                                                    <td id="Cexio_LASTVOLUME">NA</td>
+                                                    <td id="Cexio_LASTVOLUMETO">NA</td>
+                                                    <td id="Cexio_VOLUME24HOUR">NA</td>
+                                                    <td id="Cexio_VOLUME24HOURTO">NA</td>
+                                                </tr>
+
+                                                <tr id="itBit">
+                                                    <td>10</td>
+                                                    <td>itBit</td>
+                                                    <td><span id="itBit_PRICE_Arrow"></span> <span id="itBit_PRICE">NA</span></td>
+                                                    <td id="itBit_LASTUPDATE">NA</td>
+                                                    <td id="itBit_LASTVOLUME">NA</td>
+                                                    <td id="itBit_LASTVOLUMETO">NA</td>
+                                                    <td id="itBit_VOLUME24HOUR">NA</td>
+                                                    <td id="itBit_VOLUME24HOURTO">NA</td>
+                                                </tr>
+
+                                                <tr id="bitFlyer">
+                                                    <td>11</td>
+                                                    <td>bitFlyer</td>
+                                                    <td><span id="bitFlyer_PRICE_Arrow"></span> <span id="bitFlyer_PRICE">NA</span></td>
+                                                    <td id="bitFlyer_LASTUPDATE">NA</td>
+                                                    <td id="bitFlyer_LASTVOLUME">NA</td>
+                                                    <td id="bitFlyer_LASTVOLUMETO">NA</td>
+                                                    <td id="bitFlyer_VOLUME24HOUR">NA</td>
+                                                    <td id="bitFlyer_VOLUME24HOURTO">NA</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+							        </div>
+							</span>
+						</div>
+					</div>
+
+
+
+                    <!-- Aggregated Price - Start -->
+
+					<!-- Full Width Row for Table Heading  -->
+					<div class="row mt-3">
+						<div class="col-lg-12 col-sm-12">
+							<span class="d-block text-center p-0 border border-bottom-0 rounded-top border-dark cst_form_heading ">
+
+								<span class="align-middle" >
+										&nbsp;{{ folio_item_name }} ({{ folio_item_symbol }}) Current Aggregated Price
+								</span>
+
+							</span>
+						</div>
+					</div>
+
+					<!-- Full Width Row for Table -->
+					<div class="row">
+						<div class="col-lg-12 col-sm-12">
+							<span class="d-block p-0 cst_form_content ">
+
+								<div class="table-responsive">
+									<table class="table table-hover table-sm cst_table-bordered_1 m-0">
+									   <thead>
+										  <tr>
+											  <th>Coin</th>
+											  <th>Price (USD)</th>
+											  <th>Last Market</th>
+											  <th>Last Update</th>
+											  <th>Volume 24h</th>
+											  <th>Volume 24h To</th>
+										  </tr>
+									   </thead>
+
+									   <tbody>
+											 <tr id="{{ folio_item_symbol }}" class="">
+                                                    <td>{{ folio_item_symbol }}</td>
+                                                    <td><span id="{{ folio_item_symbol }}_PRICE_Arrow"></span> <span id="{{ folio_item_symbol }}_PRICE">NA</span></td>
+                                                    <td id="{{ folio_item_symbol }}_LASTMARKET">NA</td>
+												 	<td id="{{ folio_item_symbol }}_LASTUPDATE">NA</td>
+                                                    <td id="{{ folio_item_symbol }}_VOLUME24HOUR">NA</td>
+                                                    <td id="{{ folio_item_symbol }}_VOLUME24HOURTO">NA</td>
+											 </tr>
+									   </tbody>
+									</table>
+								 </div>
+
+							</span>
+						</div>
+					</div>
+
+
+                    <!-- Aggregated Price - End -->
+
+
+
+				</div>
+		</div>
+
+</div>
+
+
+
+<script>
+
+// Function to convert and format datetime from Unix Timestamps
+
+function timeConverter(UNIX_timestamp){
+  var a = new Date(UNIX_timestamp * 1000);
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var year = a.getFullYear();
+  var month = months[a.getMonth()];
+  var date = a.getDate();
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var sec = a.getSeconds();
+  var time = date + ' ' + month + ' ' + hour + ':' + min + ':' + sec ;
+  return time;
+}
+
+
+
+$(document).ready(function() {
+
+// Function to pull the current prices from different exchanges
+// CRYPTO COMPARE WEBSOCKETS
+
+         var currentPrice = {};
+         var socket = io.connect('https://streamer.cryptocompare.com/');
+         //Format: {SubscriptionId}~{ExchangeName}~{FromSymbol}~{ToSymbol}
+         //Use SubscriptionId 0 for TRADE, 2 for CURRENT and 5 for CURRENTAGG
+         //For aggregate quote updates use CCCAGG as market
+         var subscription = ['2~Bitfinex~{{ folio_item_symbol }}~USD', '2~Poloniex~{{ folio_item_symbol }}~USD',
+          '2~Kraken~{{ folio_item_symbol }}~USD', '2~Coinbase~{{ folio_item_symbol }}~USD',
+          '2~Bitstamp~{{ folio_item_symbol }}~USD', '2~HitBTC~{{ folio_item_symbol }}~USD',
+          '2~Gemini~{{ folio_item_symbol }}~USD', '2~Exmo~{{ folio_item_symbol }}~USD',
+          '2~Cexio~{{ folio_item_symbol }}~USD', '2~itBit~{{ folio_item_symbol }}~USD',
+          '2~bitFlyer~{{ folio_item_symbol }}~USD'];
+         socket.emit('SubAdd', { subs: subscription });
+
+
+
+         socket.on("m", function(message) {
+            var messageType = message.substring(0, message.indexOf("~"));
+            var res = {};
+
+
+            res = CCC.CURRENT.unpack(message);
+
+            market_name = res['MARKET']
+
+            for (var key in res) {
+                if (key == 'PRICE') {
+            			document.getElementById(market_name + "_" + key).innerHTML = (res[key]).toFixed(4)
+            		}
+
+            	else if (key == 'FLAGS') {
+            	    if (res[key] == 1) {
+            	        document.getElementById(market_name).className = "table-success"
+            	        document.getElementById(market_name + "_PRICE").className = "text-success"
+            	        document.getElementById(market_name + "_PRICE_Arrow").innerHTML = "<i class='fa fa-arrow-up'></i>"
+            	        document.getElementById(market_name + "_PRICE_Arrow").className = "text-success"
+            	    }
+            	    else if (res[key] == 2) {
+            	        document.getElementById(market_name).className = "table-danger"
+            	        document.getElementById(market_name + "_PRICE").className = "text-danger"
+            	        document.getElementById(market_name + "_PRICE_Arrow").innerHTML = "<i class='fa fa-arrow-down'></i>"
+            	        document.getElementById(market_name + "_PRICE_Arrow").className = "text-danger"
+
+            	    }
+            	    }
+
+            	else if (key == 'LASTUPDATE') {
+            			document.getElementById(market_name + "_" + key).innerHTML =timeConverter(res[key]);
+            		}
+
+            	else if (['LASTVOLUME','LASTVOLUMETO','VOLUME24HOUR','VOLUME24HOURTO'].indexOf(key) > -1){
+            			document.getElementById(market_name + "_" + key).innerHTML =(res[key]).toFixed(2);
+            		}
+
+
+            }
+         });
+
+
+
+// Function to pull current aggregated prices for the selected coin
+// CRYPTO COMPARE WEBSOCKETS
+
+		 var currentAggPrice = {};
+         var socket_agg = io.connect('https://streamer.cryptocompare.com/');
+         //Format: {SubscriptionId}~{ExchangeName}~{FromSymbol}~{ToSymbol}
+         //Use SubscriptionId 0 for TRADE, 2 for CURRENT and 5 for CURRENTAGG
+         //For aggregate quote updates use CCCAGG as market
+
+         var subscription_agg = ['5~CCCAGG~{{ folio_item_symbol }}~USD'];
+
+         socket_agg.emit('SubAdd', { subs: subscription_agg });
+
+         socket_agg.on("m", function(message) {
+            var messageType = message.substring(0, message.indexOf("~"));
+            var res = {};
+            if (messageType == CCC.STATIC.TYPE.CURRENTAGG) {
+               res = CCC.CURRENT.unpack(message);
+               //dataUnpack(res);
+
+               var coin_symbol = res['FROMSYMBOL'];
+
+               for (var key in res) {
+
+                	if (key == 'PRICE') {
+            			document.getElementById(coin_symbol + "_" + key).innerHTML = (res[key]).toFixed(4)
+            		}
+
+					else if (key == 'FLAGS') {
+						if (res[key] == 1) {
+							document.getElementById(coin_symbol).className = "table-success"
+							document.getElementById(coin_symbol + "_PRICE").className = "text-success"
+							document.getElementById(coin_symbol + "_PRICE_Arrow").innerHTML = "<i class='fa fa-arrow-up'></i>"
+							document.getElementById(coin_symbol + "_PRICE_Arrow").className = "text-success"
+							}
+						else if (res[key] == 2) {
+							document.getElementById(coin_symbol).className = "table-danger"
+							document.getElementById(coin_symbol + "_PRICE").className = "text-danger"
+							document.getElementById(coin_symbol + "_PRICE_Arrow").innerHTML = "<i class='fa fa-arrow-down'></i>"
+							document.getElementById(coin_symbol + "_PRICE_Arrow").className = "text-danger"
+
+							}
+						}
+            	    else if (key == 'LASTMARKET') {
+            			document.getElementById(coin_symbol + "_" + key).innerHTML =res[key];
+            			}
+
+            		else if (key == 'LASTUPDATE') {
+            			document.getElementById(coin_symbol + "_" + key).innerHTML =timeConverter(res[key]);
+            			}
+
+            		else if (['VOLUME24HOUR','VOLUME24HOURTO'].indexOf(key) > -1){
+            			document.getElementById(coin_symbol + "_" + key).innerHTML =(res[key]).toFixed(2);
+            			}
+
+            	}
+
+            }
+         });
+
+});
+
+</script>
+
+{% endblock %}
